@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ATJJ · Contato</title>
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+  <link rel="stylesheet" href="assets/css/brn-ui.css" />
+  <meta name="description" content="ATJJ — Cinco Anéis Mágicos · Site educacional para Jiu-Jitsu Infantil" />
+</head>
+<body>
+<header class="header">
+  <div class="container nav" role="navigation" aria-label="Principal">
+    <a class="brand" href="index.html"><img alt="" src="assets/img/favicon.svg" /><span>ATJJ · Cinco Anéis</span></a>
+    <nav class="nav-links" aria-label="Seções">
+      <a href="index.html">Início</a>
+      <a href="sequencia.html">Sequência</a>
+      <a href="aulas.html">Aulas</a>
+      <a href="insignias.html">Insígnias</a>
+      <a href="sobre.html">Sobre</a>
+      <a href="contato.html">Contato</a>
+    </nav>
+    <div class="nav-actions">
+      <button id="theme-toggle" class="toggle" aria-label="Alternar tema"></button>
+    </div>
+  </div>
+</header>
+<main>
+
+<section class="container section">
+  <h2>Fale Conosco</h2>
+  <form class="form card" onsubmit="event.preventDefault(); document.getElementById('msg').textContent='Mensagem enviada! Entraremos em contato.'; document.getElementById('msg').className='success'; this.reset();">
+    <div class="grid cols-2">
+      <div class="field">
+        <label for="nome">Nome</label>
+        <input id="nome" class="input" required placeholder="Seu nome completo" />
+      </div>
+      <div class="field">
+        <label for="email">E-mail</label>
+        <input id="email" class="input" type="email" required placeholder="voce@exemplo.com" />
+      </div>
+    </div>
+    <div class="field">
+      <label for="assunto">Assunto</label>
+      <input id="assunto" class="input" required placeholder="Assunto da mensagem" />
+    </div>
+    <div class="field">
+      <label for="mensagem">Mensagem</label>
+      <textarea id="mensagem" class="textarea" required placeholder="Como podemos ajudar?"></textarea>
+    </div>
+    <button class="btn primary" type="submit">Enviar</button>
+    <div id="msg" aria-live="polite"></div>
+  </form>
+</section>
+
+</main>
+<footer class="container footer">
+  <div class="foot-card">
+    <strong>ATJJ Dojo</strong><br/>
+    <small>© 2025 · Desenvolvido no padrão BRN UI.</small>
+  </div>
+</footer>
+<script src="assets/js/app.js" defer></script>
+</body>
+</html>

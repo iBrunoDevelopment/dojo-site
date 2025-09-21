@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>ATJJ · Aulas</title>
+  <link rel="icon" type="image/svg+xml" href="assets/img/logo.ico"/>
+  <link rel="stylesheet" href="assets/css/brn-ui.css"/>
+  <meta name="description" content="ATJJ — Aulas detalhadas (Cinco Anéis Mágicos) · Jiu-Jitsu Infantil"/>
+  <style>
+    /* ajustes leves para a página de aulas */
+    .toolbar{display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;margin:1rem 0}
+    .toolbar .field{flex:1 1 260px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
+    .lesson-card{background:var(--card-bg,#eef2f7);border:1px solid var(--border,#e5e7eb);border-radius:12px;padding:1rem}
+    .lesson-card .meta{display:flex;gap:.5rem;flex-wrap:wrap;margin:.5rem 0}
+    .badge{background:var(--badge-bg,#222);padding:.2rem .5rem;border-radius:999px;font-size:.8rem}
+    .terra{--badge-bg:#8b5a2b}
+    .agua{--badge-bg:#143246}
+    .fogo{--badge-bg:#3f1f1d}
+    .vento{--badge-bg:#1f382f}
+    .vazio{--badge-bg:#2b2b34}
+    .chip{border:1px solid var(--border,#2a2a2a);border-radius:999px;padding:.15rem .5rem;font-size:.8rem;opacity:.9}
+    .actions{display:flex;justify-content:flex-end;margin-top:.75rem}
+    .actions button{min-width:140px}
+    .sr{position:absolute;left:-9999px}
+
+    .actions button{
+      background-color: #0f172a;
+      color:#eef2f7;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .field label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+    }
+
+    .field select {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background-color: #fff;
+            appearance: none;
+            transition: all 0.3s ease;
+            color: #4a5568;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .field select:hover {
+            border-color: #c3cfe2;
+    }
+
+    .field:focus-within::after {
+            transform: rotate(180deg);
+            color: #667eea;
+    }
+
+    @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .field label {
+                font-size: 1rem;
+            }
+            
+            .field select {
+                padding: 12px;
+            }
+    }
+  
+    .field {
+      display: inline-block;
+      width: 70%;
+    }
+    
+    .search-group {
+      display: flex;
+      align-items: flex-end; /* alinha na base do campo */
+      gap: 10px; /* espaço entre o campo e o botão */
+    }
+
+    .toolbar {
+      display:flex;
+      justify-content:center;
+    }
+
+    #search {
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      background-color: #fff;
+      appearance: none;
+      transition: all 0.3s ease;
+      color: #4a5568;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    #clear {
+      background-color: #0f172a;
+      color:#eef2f7;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    /* Dark */
+    .dark .lesson-card{
+      background-color: #0f172a;
+    }
+    .dark .badge {
+        background: var(--badge-bg, #222);}
+
+    .dark .actions button {
+      background-color: #eef2f7;
+      color:#0f172a;
+    }
+  </style>
+</head>
+<body>
+<header class="header">
+  <div class="container nav" role="navigation" aria-label="Principal">
+    <a class="brand" href="index.html"><img alt="" src="assets/img/logo.ico"/><span>ATJJ · Cinco Anéis</span></a>
+    <nav class="nav-links" aria-label="Seções">
+      <a href="index.html">Início</a>
+      <a href="sequencia.html">Sequência</a>
+      <a class="active" href="aulas.html" aria-current="page">Aulas</a>
+      <a href="insignias.html">Insígnias</a>
+      <a href="sobre.html">Sobre</a>
+      <a href="contato.html">Contato</a>
+    </nav>
+    <div class="nav-actions">
+      <button id="theme-toggle" class="toggle" aria-label="Alternar tema"></button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="container section">
+    <h2>Aulas (15 aulas · 5 semanas)</h2>
+
+    <!-- Toolbar -->
+    <div class="toolbar" role="region" aria-label="Ferramentas de filtro e busca">
+      <div class="field">
+        <label for="filter-week"><strong>Semana</strong></label>
+        <select id="filter-week">
+          <option value="all">Todas</option>
+          <option value="1">🌱 Semana 1 — Terra</option>
+          <option value="2">💧 Semana 2 — Água</option>
+          <option value="3">🔥 Semana 3 — Fogo</option>
+          <option value="4">🌬️ Semana 4 — Vento</option>
+          <option value="5">🌌 Semana 5 — Vácuo</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="search"><strong>Buscar</strong></label>
+        <input id="search" type="search" placeholder="Procure por técnica, jogo, objetivo…"/>
+      </div>
+      <button id="clear" class="secondary" type="button">Limpar</button>
+    </div>
+
+    <!-- Grid de Aulas -->
+    <div id="grid" class="grid" aria-live="polite">
+      <!-- Semana 1 · Terra -->
+      <article class="lesson-card terra" data-week="1" data-title="Plantando a Base (Feijãozinho)" data-tags="terra base postura shizen jigotai feijao empurra-empurra">
+        <h3><span class="badge">Aula 1</span> Plantando a Base (Feijãozinho)</h3>
+        <div class="meta"><span class="chip">🌱 Terra</span><span class="chip">Base</span><span class="chip">Postura</span></div>
+        <p><strong>Técnicas:</strong> base de joelhos; postura em pé (Shizen-Tai); base de combate (Jigotai).</p>
+        <p><strong>Dinâmica:</strong> Empurra-empurra com base fixa.</p>
+        <p><strong>Simbólico:</strong> Plantio do feijão.</p>
+        <p><strong>Objetivo técnico:</strong> posicionamento e centro de gravidade baixo.</p>
+        <div class="actions"><button class="primary open" data-id="a1">Ver detalhes</button></div>
+      </article>
+
+      <article class="lesson-card terra" data-week="1" data-title="Técnica de equilíbrio e postura" data-tags="terra equilibrio postura jigotai kumi-kata estatua">
+        <h3><span class="badge">Aula 2</span> Técnica de equilíbrio e postura</h3>
+        <div class="meta"><span class="chip">🌱 Terra</span><span class="chip">Equilíbrio</span></div>
+        <p><strong>Técnicas:</strong> movimentação com base (Jigotai), Kumi-Kata.</p>
+        <p><strong>Jogo:</strong> Estátua do Jiu-Jitsu (transições de base).</p>
+        <p><strong>Objetivo técnico:</strong> posicionamento e centro de gravidade baixo.</p>
+        <div class="actions"><button class="primary open" data-id="a2">Ver detalhes</button></div>
+      </article>
+
+      <article class="lesson-card terra" data-week="1" data-title="Base de Joelho na Guarda Fechada" data-tags="terra guarda fechada base joelhos postura corredor postura">
+        <h3><span class="badge">Aula 3</span> Base de Joelho na Guarda Fechada</h3>
+        <div class="meta"><span class="chip">🌱 Terra</span><span class="chip">Base & Postura</span></div>
+        <p><strong>Técnica (Uke):</strong> postura ajoelhada dentro da guarda fechada — joelhos afastados, coluna ereta, mãos na linha das axilas, pescoço protegido, peso centralizado.</p>
+        <p><strong>Jogo:</strong> Corredor da Postura (versão solo) — avançar de joelhos entre toques leves mantendo alinhamento.</p>
+        <p><strong>Prática em dupla:</strong> Tori fecha a guarda e tenta quebrar a postura; Uke mantém estabilidade e equilíbrio.</p>
+        <p><strong>Tarefa de casa:</strong> observar o feijão e refletir sobre “minhas raízes”.</p>
+        <p><strong>Objetivo técnico:</strong> evitar quebra de postura/raspagem mantendo base estável.</p>
+        <div class="actions"><button class="primary open" data-id="a3">Ver detalhes</button></div>
+      </article>
+
+      <!-- Semana 2 · Água -->
+      <article class="lesson-card agua" data-week="2" data-title="Mudar de Caminho" data-tags="agua adaptacao montada troca de base correnteza">
+        <h3><span class="badge">Aula 4</span> Mudar de Caminho</h3>
+        <div class="meta"><span class="chip">💧 Água</span><span class="chip">Adaptação</span></div>
+        <p><strong>Técnica:</strong> saída da montada / troca de base.</p>
+        <p><strong>Jogo:</strong> Correnteza (obstáculos no solo).</p>
+        <p><strong>Objetivo:</strong> mudar de posição e pensamento com leveza.</p>
+        <div class="actions"><button class="primary open" data-id="a4">Ver detalhes</button></div>
+      </article>
+
+      <article class="lesson-card agua" data-week="2" data-title="Escapando com Criatividade" data-tags="agua upa ponte rotacao entrada guarda caranguejo criatividade">
+        <h3><span class="badge">Aula 5</span> Escapando com Criatividade</h3>
+        <div class="meta"><span class="chip">💧 Água</span><span class="chip">Escapes</span></div>
+        <p><strong>Técnica:</strong> ponte e rotação (upa); entrada em guarda.</p>
+        <p><strong>Jogo:</strong> Escapa do caranguejo.</p>
+        <p><strong>Objetivo:</strong> criatividade para sair de situações difíceis.</p>
+        <div class="actions"><button class="primary open" data-id="a5">Ver detalhes</button></div>
+      </article>
+
+      <article class="lesson-card agua" data-week="2" data-title="Jiu-jitsu que escorre" data-tags="agua reposicao de guarda fluidez transicoes">
+        <h3><span class="badge">Aula 6</span> Jiu-jitsu que escorre</h3>
+        <div class="meta"><span class="chip">💧 Água</span><span class="chip">Fluidez</span></div>
+        <p><strong>Técnica:</strong> reposição de guarda com movimento fluido.</p>
+        <p><strong>Desafio:</strong> rolamento fluido com 3 transições.</p>
+        <p><strong>Objetivo:</strong> estimular fluidez e leveza.</p>
+        <div class="actions"><button class="primary open" data-id="a6">Ver detalhes</button></div>
+      </article>
+
+      <!-- Semana 3 · Fogo -->
+      <article class="lesson-card fogo" data-week="3" data-title="A coragem de tentar" data-tags="fogo coragem ogoshi projecao apresentacao">
+        <h3><span class="badge">Aula 7</span> A coragem de tentar</h3>
+        <div class="meta"><span class="chip">🔥 Fogo</span><span class="chip">Ataque</span></div>
+        <p><strong>Técnica:</strong> entrada para O Goshi.</p>
+        <p><strong>Desafio:</strong> zona de coragem — executar para o grupo.</p>
+        <p><strong>Objetivo:</strong> iniciar ataque com decisão e firmeza.</p>
+        <div class="actions"><button class="primary open" data-id="a7">Ver detalhes</button></div>
+      </article>
+
+      <article class="lesson-card fogo" data-week="3" data-title="Ação com energia" data-tags="fogo projecoes kiai circuito chama nos pes">
+        <h3><span class="badge">Aula 8</span> Ação com energia</h3>
+        <div class="meta"><span class="chip">🔥 Fogo</span><span class="chip">Energia</span></div>
+        <p><strong>Técnica:</strong> projeções repetidas com kiai e postura.</p>
+        <p><strong>Brincadeira:</strong> Samurai com chama nos pés (circuito).</p>
+        <p><strong>Objetivo:</strong> canalizar energia para a técnica.</p>
+        <div class="actions"><button class="primary open" data-id="a8">Ver detalhes</button></div>
+      </article>
+
+      <article class="lesson-card fogo" data-week="3" data-title="Desafio Ardente" data-tags="fogo circuito queda imobilizacao rotacao sequencia confianca">
+        <h3><span class="badge">Aula 9</span> Desafio Ardente</h3>
+        <div class="meta"><span class="chip">🔥 Fogo</span><span class="chip">Sequência</span></div>
+        <p><strong>Circuito:</strong> queda + imobilização + rotação.</p>
+        <p><strong>Objetivo:</strong> iniciativa com técnica, ritmo e emoção.</p>
+        <div class="actions"><button class="primary open" data-id="a9">Ver detalhes</button></div>
+      </article>
+
+      <!-- Semana 4 · Vento -->
+      <article class="lesson-card vento" data-week="4" data-title="Vento que observa" data-tags="vento observacao espelho timing foco">
+        <h3><span class="badge">Aula 10</span> Vento que observa</h3>
+        <div class="meta"><span class="chip">🌬️ Vento</span><span class="chip">Timing</span></div>
+        <p><strong>Atividade:</strong> espelho (repetir o colega).</p>
+        <p><strong>Técnica:</strong> entrar no tempo do outro.</p>
+        <p><strong>Objetivo:</strong> percepção corporal e observação.</p>
+        <div class="actions"><button class="primary open" data-id="a10">Ver detalhes</button></div>
+      </article>
+
+      <article class="lesson-card vento" data-week="4" data-title="Aprender com o outro" data-tags="vento empatia guarda fechada montada pares correcao">
+        <h3><span class="badge">Aula 11</span> Aprender com o outro</h3>
+        <div class="meta"><span class="chip">🌬️ Vento</span><span class="chip">Empatia</span></div>
+        <p><strong>Técnica:</strong> transição guarda fechada → montada.</p>
+        <p><strong>Objetivo:</strong> aprendizado mútuo e feedback.</p>
+        <div class="actions"><button class="primary open" data-id="a11">Ver detalhes</button></div>
+      </article>
+
+      <article class="lesson-card vento" data-week="4" data-title="Olhos do Vento" data-tags="vento detalhes memoria sussurro imitacao">
+        <h3><span class="badge">Aula 12</span> Olhos do Vento</h3>
+        <div class="meta"><span class="chip">🌬️ Vento</span><span class="chip">Detalhe</span></div>
+        <p><strong>Brincadeira:</strong> sussurro do vento.</p>
+        <p><strong>Desafio:</strong> imitar um movimento com precisão.</p>
+        <p><strong>Objetivo:</strong> atenção aos detalhes e memória técnica.</p>
+        <div class="actions"><button class="primary open" data-id="a12">Ver detalhes</button></div>
+      </article>
+
+      <!-- Semana 5 · Vácuo -->
+      <article class="lesson-card vazio" data-week="5" data-title="Silêncio que ensina" data-tags="vazio zanshin respiracao transicoes controle mente corpo">
+        <h3><span class="badge">Aula 13</span> Silêncio que ensina</h3>
+        <div class="meta"><span class="chip">🌌 Vácuo</span><span class="chip">Autocontrole</span></div>
+        <p><strong>Prática:</strong> alongamento + respiração guiada.</p>
+        <p><strong>Técnica:</strong> transição suave entre posições.</p>
+        <p><strong>Objetivo:</strong> controle do corpo e da mente.</p>
+        <div class="actions"><button class="primary open" data-id="a13">Ver detalhes</button></div>
+      </article>
+
+      <article class="lesson-card vazio" data-week="5" data-title="O poder da calma" data-tags="vazio calma kesa gatame respiracao dominancia sem forca">
+        <h3><span class="badge">Aula 14</span> O poder da calma</h3>
+        <div class="meta"><span class="chip">🌌 Vácuo</span><span class="chip">Calma</span></div>
+        <p><strong>Técnica:</strong> Kesa Gatame com foco em respiração/ajuste.</p>
+        <p><strong>Desafio:</strong> manter posição dominante sem força bruta.</p>
+        <p><strong>Objetivo:</strong> equilíbrio emocional em combate.</p>
+        <div class="actions"><button class="primary open" data-id="a14">Ver detalhes</button></div>
+      </article>
+
+      <article class="lesson-card vazio" data-week="5" data-title="Guardião dos Cinco Anéis" data-tags="vazio revisao insignias certificado fechamento">
+        <h3><span class="badge">Aula 15</span> Guardião dos Cinco Anéis</h3>
+        <div class="meta"><span class="chip">🌌 Vácuo</span><span class="chip">Síntese</span></div>
+        <p><strong>Revisão:</strong> 1 técnica por semana.</p>
+        <p><strong>Encerramento:</strong> insígnias e certificado.</p>
+        <p><strong>Objetivo:</strong> reconhecer evolução técnica e emocional.</p>
+        <div class="actions"><button class="primary open" data-id="a15">Ver detalhes</button></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Modal de Detalhes -->
+  <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-dialog">
+      <button class="close" aria-label="Fechar">×</button>
+      <h2 id="modal-title">Detalhes da aula</h2>
+      <div id="modal-body" class="body">…</div>
+    </div>
+  </div>
+</main>
+
+<footer class="container footer">
+  <div class="foot-card">
+    <strong>ATJJ Dojo</strong><br/>
+    <small>© 2025 · Desenvolvido no padrão BRN UI.</small>
+  </div>
+</footer>
+
+<script>
+  // filtro por semana e busca
+  const weekSel = document.getElementById('filter-week');
+  const search = document.getElementById('search');
+  const clearBtn = document.getElementById('clear');
+  const cards = [...document.querySelectorAll('.lesson-card')];
+
+  function applyFilters(){
+    const w = weekSel.value;
+    const q = search.value.trim().toLowerCase();
+    cards.forEach(c=>{
+      const matchWeek = (w === 'all') || (c.dataset.week === w);
+      const hay = (c.dataset.title + ' ' + (c.dataset.tags||'') + ' ' + c.textContent).toLowerCase();
+      const matchQuery = !q || hay.includes(q);
+      c.style.display = (matchWeek && matchQuery) ? '' : 'none';
+    });
+  }
+  weekSel.addEventListener('change', applyFilters);
+  search.addEventListener('input', applyFilters);
+  clearBtn.addEventListener('click', ()=>{
+    weekSel.value='all'; search.value=''; applyFilters();
+  });
+
+  // modal simples com conteúdos pré-definidos (detalhes essenciais)
+  const MODAL = document.getElementById('modal');
+  const BODY  = document.getElementById('modal-body');
+  const TITLE = document.getElementById('modal-title');
+  const DETAILS = {
+    a1: `
+      <p><strong>Semana 1 — Terra · Aula 1</strong></p>
+      <ul>
+        <li><strong>Técnicas:</strong> base de joelhos; Shizen-Tai; Jigotai.</li>
+        <li><strong>Dinâmica:</strong> empurra-empurra com base.</li>
+        <li><strong>Simbólico:</strong> plantio do feijão.</li>
+        <li><strong>Objetivo técnico:</strong> posição e centro de gravidade baixo.</li>
+      </ul>`,
+    a2: `
+      <p><strong>Semana 1 — Terra · Aula 2</strong></p>
+      <ul>
+        <li><strong>Técnicas:</strong> Jigotai; Kumi-Kata; transições de base.</li>
+        <li><strong>Jogo:</strong> Estátua do Jiu-Jitsu.</li>
+        <li><strong>Objetivo técnico:</strong> posicionamento e estabilidade.</li>
+      </ul>`,
+    a3: `
+      <p><strong>Semana 1 — Terra · Aula 3</strong></p>
+      <ul>
+        <li><strong>Técnica (Uke):</strong> postura ajoelhada na guarda fechada (joelhos abertos, coluna ereta, mãos na linha das axilas, pescoço protegido, peso centralizado).</li>
+        <li><strong>Jogo:</strong> Corredor da Postura — avançar de joelhos recebendo toques leves sem perder o alinhamento.</li>
+        <li><strong>Prática em dupla:</strong> Tori fecha a guarda e trabalha para quebrar a postura; Uke mantém base estável, evitando raspagem.</li>
+        <li><strong>Tarefa:</strong> observar o feijão e refletir sobre “minhas raízes”.</li>
+        <li><strong>Objetivo técnico:</strong> evitar quebra de postura/raspagem com base sólida.</li>
+      </ul>`,
+    a4: `
+      <p><strong>Semana 2 — Água · Aula 4</strong></p>
+      <ul>
+        <li><strong>Técnica:</strong> saída da montada / troca de base.</li>
+        <li><strong>Jogo:</strong> Correnteza (obstáculos no solo).</li>
+        <li><strong>Objetivo:</strong> adaptação e leveza.</li>
+      </ul>`,
+    a5: `
+      <p><strong>Semana 2 — Água · Aula 5</strong></p>
+      <ul>
+        <li><strong>Técnica:</strong> ponte e rotação (upa); entrada em guarda.</li>
+        <li><strong>Jogo:</strong> Escapa do caranguejo.</li>
+        <li><strong>Objetivo:</strong> criatividade para escapar.</li>
+      </ul>`,
+    a6: `
+      <p><strong>Semana 2 — Água · Aula 6</strong></p>
+      <ul>
+        <li><strong>Técnica:</strong> reposição de guarda fluida.</li>
+        <li><strong>Desafio:</strong> 3 transições contínuas.</li>
+        <li><strong>Objetivo:</strong> fluidez e leveza.</li>
+      </ul>`,
+    a7: `
+      <p><strong>Semana 3 — Fogo · Aula 7</strong></p>
+      <ul>
+        <li><strong>Técnica:</strong> entrada para O Goshi.</li>
+        <li><strong>Desafio:</strong> apresentar a técnica para o grupo.</li>
+        <li><strong>Objetivo:</strong> decisão e firmeza.</li>
+      </ul>`,
+    a8: `
+      <p><strong>Semana 3 — Fogo · Aula 8</strong></p>
+      <ul>
+        <li><strong>Técnica:</strong> projeções com kiai.</li>
+        <li><strong>Brincadeira:</strong> Samurai com chama nos pés (circuito).</li>
+        <li><strong>Objetivo:</strong> energia aplicada à técnica.</li>
+      </ul>`,
+    a9: `
+      <p><strong>Semana 3 — Fogo · Aula 9</strong></p>
+      <ul>
+        <li><strong>Circuito:</strong> queda + imobilização + rotação.</li>
+        <li><strong>Objetivo:</strong> sequência com confiança.</li>
+      </ul>`,
+    a10: `
+      <p><strong>Semana 4 — Vento · Aula 10</strong></p>
+      <ul>
+        <li><strong>Atividade:</strong> espelho.</li>
+        <li><strong>Técnica:</strong> timing (entrar no tempo do outro).</li>
+        <li><strong>Objetivo:</strong> percepção e observação.</li>
+      </ul>`,
+    a11: `
+      <p><strong>Semana 4 — Vento · Aula 11</strong></p>
+      <ul>
+        <li><strong>Técnica:</strong> guarda fechada → montada.</li>
+        <li><strong>Objetivo:</strong> aprendizado mútuo e feedback.</li>
+      </ul>`,
+    a12: `
+      <p><strong>Semana 4 — Vento · Aula 12</strong></p>
+      <ul>
+        <li><strong>Brincadeira:</strong> sussurro do vento.</li>
+        <li><strong>Desafio:</strong> imitar um movimento com precisão.</li>
+        <li><strong>Objetivo:</strong> atenção ao detalhe e memória técnica.</li>
+      </ul>`,
+    a13: `
+      <p><strong>Semana 5 — Vácuo · Aula 13</strong></p>
+      <ul>
+        <li><strong>Prática:</strong> respiração guiada.</li>
+        <li><strong>Técnica:</strong> transições suaves.</li>
+        <li><strong>Objetivo:</strong> controle corpo/mente.</li>
+      </ul>`,
+    a14: `
+      <p><strong>Semana 5 — Vácuo · Aula 14</strong></p>
+      <ul>
+        <li><strong>Técnica:</strong> Kesa Gatame com foco em respiração.</li>
+        <li><strong>Desafio:</strong> dominar sem força bruta.</li>
+        <li><strong>Objetivo:</strong> equilíbrio emocional.</li>
+      </ul>`,
+    a15: `
+      <p><strong>Semana 5 — Vácuo · Aula 15</strong></p>
+      <ul>
+        <li><strong>Revisão:</strong> uma técnica por semana.</li>
+        <li><strong>Encerramento:</strong> insígnias e certificado.</li>
+        <li><strong>Objetivo:</strong> reconhecer evolução técnica e ética.</li>
+      </ul>`
+  };
+
+  function openModal(id){
+    TITLE.textContent = document.querySelector(`button.open[data-id="${id}"]`)?.closest('.lesson-card')?.querySelector('h3')?.textContent || 'Detalhes';
+    BODY.innerHTML = DETAILS[id] || '<p>Conteúdo não encontrado.</p>';
+    MODAL.classList.add('show');
+  }
+  function closeModal(){ MODAL.classList.remove('show'); }
+
+  document.querySelectorAll('.open').forEach(b=>b.addEventListener('click', e=>openModal(e.currentTarget.dataset.id)));
+  document.querySelector('.modal .close').addEventListener('click', closeModal);
+  MODAL.addEventListener('click', (e)=>{ if(e.target === MODAL) closeModal(); });
+
+  // inicial
+  applyFilters();
+</script>
+<script src="assets/js/app.js" defer></script>
+</body>
+</html>
